@@ -33,7 +33,7 @@ SELECT ProductID, Name, Color
 FROM Production.Product
 WHERE Color IN ('Black', 'Blue');
 
-SELECT ProductID, Name
+SELECT ProductID, Name, Color, ListPrice
 FROM Production.Product
 WHERE Name LIKE 'S%';
 
