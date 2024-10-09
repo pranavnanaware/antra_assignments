@@ -281,3 +281,214 @@ class Program
         }
     }
 }
+
+
+
+
+----- ARRAY ----
+
+
+ 1. When to use String vs. StringBuilder in C#?
+A -  Use String when the content is immutable (i.e., not modified frequently), as String creates a new object with each modification. Use StringBuilder for performance when you need to modify a string frequently (e.g., appending, replacing) as it is mutable and doesn't create new instances for each modification.
+
+ 2. What is the base class for all arrays in C#?
+A - The base class for all arrays in C# is System.Array.
+
+ 3. How do you sort an array in C#?
+A - You can sort an array in C# using Array.Sort(array).
+
+ 4. What property of an array object can be used to get the total number of elements in an array?
+A -  The Length property of an array is used to get the total number of elements in the array.
+
+ 5. Can you store multiple data types in System.Array?
+A -  No, System.Array is a collection of elements of the same data type. However, you can use an object[] array to store different types since all types derive from object.
+
+ 6. What’s the difference between System.Array.CopyTo() and System.Array.Clone()?
+A - CopyTo() copies the elements of the array into another existing array starting at a specified index. Clone() creates a shallow copy of the array, returning a new array with the same elements as the original.
+
+
+
+--- Copying the array --
+int[] originalArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+int[] copiedArray = new int[originalArray.Length];
+
+for (int i = 0; i < originalArray.Length; i++)
+{
+    copiedArray[i] = originalArray[i];
+}
+
+Console.WriteLine("Original Array: " + string.Join(", ", originalArray));
+Console.WriteLine("Copied Array: " + string.Join(", ", copiedArray));
+
+
+--- Simple List Management -- 
+
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        List<string> list = new List<string>();
+        while (true)
+        {
+            Console.WriteLine("Enter command (+ item, - item, or -- to clear):");
+            string input = Console.ReadLine();
+
+            if (input.StartsWith("+"))
+            {
+                list.Add(input.Substring(2));
+            }
+            else if (input.StartsWith("-"))
+            {
+                list.Remove(input.Substring(2));
+            }
+            else if (input == "--")
+            {
+                list.Clear();
+            }
+
+            Console.WriteLine("Current list: " + string.Join(", ", list));
+        }
+    }
+}
+
+
+--- Find Primes
+
+static int[] FindPrimesInRange(int startNum, int endNum)
+{
+    List<int> primes = new List<int>();
+    for (int i = startNum; i <= endNum; i++)
+    {
+        bool isPrime = true;
+        for (int j = 2; j <= Math.Sqrt(i); j++)
+        {
+            if (i % j == 0)
+            {
+                isPrime = false;
+                break;
+            }
+        }
+        if (isPrime && i > 1)
+        {
+            primes.Add(i);
+        }
+    }
+    return primes.ToArray();
+}
+
+--- Array Rotation and Summing
+
+void RotateAndSum(int[] array, int k)
+{
+    int n = array.Length;
+    int[] sum = new int[n];
+
+    for (int r = 1; r <= k; r++)
+    {
+        int[] rotated = new int[n];
+        for (int i = 0; i < n; i++)
+        {
+            rotated[(i + r) % n] = array[i];
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            sum[i] += rotated[i];
+        }
+
+        Console.WriteLine("Rotated: " + string.Join(", ", rotated));
+    }
+
+    Console.WriteLine("Sum: " + string.Join(", ", sum));
+}
+
+
+--- Longest Sequence 
+
+int[] array = {2, 1, 1, 2, 3, 3, 2, 2, 2, 1};
+int longestSeqStart = 0, longestSeqLength = 1, currentSeqLength = 1;
+
+for (int i = 1; i < array.Length; i++)
+{
+    if (array[i] == array[i - 1])
+    {
+        currentSeqLength++;
+        if (currentSeqLength > longestSeqLength)
+        {
+            longestSeqLength = currentSeqLength;
+            longestSeqStart = i - longestSeqLength + 1;
+        }
+    }
+    else
+    {
+        currentSeqLength = 1;
+    }
+}
+
+for (int i = longestSeqStart; i < longestSeqStart + longestSeqLength; i++)
+{
+    Console.Write(array[i] + " ");
+}
+
+
+--- Practice Strings:
+1. Reverse a String:
+
+Using char array:
+
+
+string input = "sample";
+char[] charArray = input.ToCharArray();
+Array.Reverse(charArray);
+string reversed = new string(charArray);
+Console.WriteLine(reversed);
+
+Using for loop:
+
+string input = "sample";
+for (int i = input.Length - 1; i >= 0; i--)
+{
+    Console.Write(input[i]);
+}
+
+
+2. Reverse Words in a Sentence:
+
+string sentence = "C# is not C++, and PHP is not Delphi!";
+char[] separators = { ' ', '.', ',', ':', ';', '=', '(', ')', '&', '[', ']', '\"', '\'', '\\', '/', '!', '?', ' ' };
+string[] words = sentence.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+Array.Reverse(words);
+Console.WriteLine(string.Join(" ", words));
+
+
+3. Extract Unique Palindromes:
+
+string text = "Hi,exe? ABBA! Hog fully a string: ExE. Bob";
+HashSet<string> palindromes = new HashSet<string>();
+string[] words = text.Split(new char[] { ' ', ',', '.', '!', '?', ':', ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+foreach (string word in words)
+{
+    string lowerWord = word.ToLower();
+    if (lowerWord == new string(lowerWord.Reverse().ToArray()))
+    {
+        palindromes.Add(word);
+    }
+}
+
+Console.WriteLine(string.Join(", ", palindromes.OrderBy(p => p)));
+
+
+4. Parse URL:
+
+string url = "https://www.apple.com/iphone";
+Uri uri = new Uri(url);
+Console.WriteLine($"[protocol] = \"{uri.Scheme}\"");
+Console.WriteLine($"[server] = \"{uri.Host}\"");
+Console.WriteLine($"[resource] = \"{uri.AbsolutePath.Trim('/')}\"");
+
+
+
