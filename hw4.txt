@@ -1,0 +1,283 @@
+#1
+Telephone number: string
+Height: double
+Age: int
+Gender: enum
+Salary: decimal
+ISBN: string
+Price: decimal
+Shipping weight: double
+Population: long
+Stars: BigInteger
+Employees: int
+
+#2
+Value types (e.g., int, float) store actual data. They are stored on the stack.
+Reference types (e.g., class, string) store a reference to data. They are stored on the heap.
+Boxing is converting a value type to a reference type (e.g., int to object).
+Unboxing is converting a reference type back to a value type.
+
+
+#3
+Managed resources: Handled by the .NET runtime (e.g., memory allocation for objects).
+Unmanaged resources: Outside the control of the .NET runtime (e.g., file handles, database connections) and must be manually handled.
+
+#4
+The garbage collector (GC) automatically manages memory, freeing up space by cleaning unused objects to prevent memory leaks.
+
+
+#2.1
+Console.WriteLine($"sbyte: {sizeof(sbyte)} bytes, Min: {sbyte.MinValue}, Max: {sbyte.MaxValue}");
+Console.WriteLine($"byte: {sizeof(byte)} bytes, Min: {byte.MinValue}, Max: {byte.MaxValue}");
+Console.WriteLine($"short: {sizeof(short)} bytes, Min: {short.MinValue}, Max: {short.MaxValue}");
+Console.WriteLine($"ushort: {sizeof(ushort)} bytes, Min: {ushort.MinValue}, Max: {ushort.MaxValue}");
+Console.WriteLine($"int: {sizeof(int)} bytes, Min: {int.MinValue}, Max: {int.MaxValue}");
+Console.WriteLine($"uint: {sizeof(uint)} bytes, Min: {uint.MinValue}, Max: {uint.MaxValue}");
+Console.WriteLine($"long: {sizeof(long)} bytes, Min: {long.MinValue}, Max: {long.MaxValue}");
+Console.WriteLine($"ulong: {sizeof(ulong)} bytes, Min: {ulong.MinValue}, Max: {ulong.MaxValue}");
+Console.WriteLine($"float: {sizeof(float)} bytes, Min: {float.MinValue}, Max: {float.MaxValue}");
+Console.WriteLine($"double: {sizeof(double)} bytes, Min: {double.MinValue}, Max: {double.MaxValue}");
+Console.WriteLine($"decimal: {sizeof(decimal)} bytes, Min: {decimal.MinValue}, Max: {decimal.MaxValue}");
+
+#2.2
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Enter number of centuries: ");
+        int centuries = int.Parse(Console.ReadLine());
+
+        long years = centuries * 100L;
+        long days = (long)(years * 365.24); 
+        long hours = days * 24L;
+        long minutes = hours * 60L;
+        long seconds = minutes * 60L;
+        long milliseconds = seconds * 1000L;
+        long microseconds = milliseconds * 1000L;
+        long nanoseconds = microseconds * 1000L;
+
+        Console.WriteLine($"{centuries} centuries = {years} years = {days} days = {hours} hours = {minutes} minutes = {seconds} seconds = {milliseconds} milliseconds = {microseconds} microseconds = {nanoseconds} nanoseconds");
+    }
+}
+
+
+#Test your knowledge
+
+1. Dividing an int by 0 causes a System.DivideByZeroException.
+2. Dividing a double by 0 results in Infinity, -Infinity, or NaN depending on the values involved.
+3. Overflowing an int wraps around to the minimum or maximum value of the type in an unchecked context, and throws an OverflowException in a checked context.
+4. x = y++; assigns the current value of y to x, then increments y. x = ++y; increments y first, then assigns the new value of y to x.
+5. break exits the loop entirely, continue skips the current iteration and moves to the next one, and return exits the method altogether.
+6. The three parts of a for statement are initialization, condition, and increment. None of them are strictly required for compilation.
+7. = is the assignment operator, which assigns a value to a variable. == is the equality operator, which compares two values.
+8. Yes, for ( ; true; ) ; compiles and runs as an infinite loop.
+9. The underscore _ in a switch expression is a wildcard that acts as a catch-all case.
+10. An object must implement IEnumerable or IEnumerable<T> to be enumerated by a foreach loop.
+
+
+
+-- FizzBuzz
+
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        for (int i = 1; i <= 100; i++)
+        {
+            if (i % 3 == 0 && i % 5 == 0)
+            {
+                Console.WriteLine("FizzBuzz");
+            }
+            else if (i % 3 == 0)
+            {
+                Console.WriteLine("Fizz");
+            }
+            else if (i % 5 == 0)
+            {
+                Console.WriteLine("Buzz");
+            }
+            else
+            {
+                Console.WriteLine(i);
+            }
+        }
+    }
+}
+
+
+
+--- FizzBuzz
+
+
+
+
+for (int i = 1; i <= 100; i++)
+{
+    if (i % 3 == 0 && i % 5 == 0) Console.WriteLine("FizzBuzz");
+    else if (i % 3 == 0) Console.WriteLine("Fizz");
+    else if (i % 5 == 0) Console.WriteLine("Buzz");
+    else Console.WriteLine(i);
+}
+
+Answer: Outputs "Fizz" for multiples of 3, "Buzz" for multiples of 5, and "FizzBuzz" for multiples of both.
+
+
+
+ Byte Overflow Code:
+
+int max = 500;
+for (byte i = 0; i < max; i++)
+{
+    if (i == 255) Console.WriteLine("Warning: Byte overflow is about to occur.");
+    Console.WriteLine(i);
+}
+
+Answer: Warns before byte overflow and shows wrapping behavior after 255.
+
+
+
+ Random Number Guessing Game Code:
+
+Random random = new Random();
+int correctNumber = random.Next(1, 4);
+Console.WriteLine("Guess the number between 1 and 3:");
+int guessedNumber = int.Parse(Console.ReadLine());
+
+if (guessedNumber < 1 || guessedNumber > 3) Console.WriteLine("Invalid guess.");
+else if (guessedNumber < correctNumber) Console.WriteLine("Too low!");
+else if (guessedNumber > correctNumber) Console.WriteLine("Too high!");
+else Console.WriteLine("Correct!");
+
+Answer: Asks the user to guess a number between 1 and 3 and provides feedback on whether the guess is too high, too low, or correct.
+
+
+
+--- Pyramid
+
+int rows = 5;
+for (int i = 1; i <= rows; i++)
+{
+    for (int j = i; j < rows; j++) 
+    {
+        Console.Write(" ");
+    }
+    for (int k = 1; k <= (2 * i - 1); k++) 
+    {
+        Console.Write("*");
+    }
+    Console.WriteLine(); 
+}
+
+
+Answer: This code prints a pyramid pattern with 5 rows, where each row has increasing stars centered by spaces.
+
+--- 
+
+Q 3
+
+Random random = new Random();
+int correctNumber = random.Next(1, 4);
+
+Console.WriteLine("Guess a number between 1 and 3:");
+int guessedNumber = int.Parse(Console.ReadLine());
+
+if (guessedNumber < 1 || guessedNumber > 3)
+{
+    Console.WriteLine("Invalid guess. Please guess between 1 and 3.");
+}
+else if (guessedNumber < correctNumber)
+{
+    Console.WriteLine("Too low!");
+}
+else if (guessedNumber > correctNumber)
+{
+    Console.WriteLine("Too high!");
+}
+else
+{
+    Console.WriteLine("Correct!");
+}
+
+Answer: The program generates a random number between 1 and 3, asks the user to guess, and provides feedback if the guess is too low, too high, correct, or out of range.
+
+
+Q4 
+Birth Date and Days Old Program:
+
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Enter your birthdate (yyyy-mm-dd):");
+        DateTime birthDate = DateTime.Parse(Console.ReadLine());
+
+        DateTime today = DateTime.Now;
+        TimeSpan ageSpan = today - birthDate;
+        int daysOld = ageSpan.Days;
+        Console.WriteLine($"You are {daysOld} days old.");
+
+        int daysToNextAnniversary = 10000 - (daysOld % 10000);
+        DateTime nextAnniversary = today.AddDays(daysToNextAnniversary);
+        Console.WriteLine($"Your next 10,000-day anniversary is on {nextAnniversary.ToShortDateString()}");
+    }
+}
+
+Q5 
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        DateTime currentTime = DateTime.Now;
+        int hour = currentTime.Hour;
+
+        if (hour >= 5 && hour < 12)
+        {
+            Console.WriteLine("Good Morning");
+        }
+        if (hour >= 12 && hour < 17)
+        {
+            Console.WriteLine("Good Afternoon");
+        }
+        if (hour >= 17 && hour < 21)
+        {
+            Console.WriteLine("Good Evening");
+        }
+        if (hour >= 21 || hour < 5)
+        {
+            Console.WriteLine("Good Night");
+        }
+    }
+}
+
+
+Q6
+Counting with Different Increments Code:
+
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        for (int outer = 1; outer <= 4; outer++)
+        {
+            for (int inner = 0; inner <= 24; inner += outer)
+            {
+                Console.Write(inner);
+                if (inner < 24)
+                {
+                    Console.Write(", ");
+                }
+            }
+            Console.WriteLine(); 
+        }
+    }
+}
