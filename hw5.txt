@@ -1,0 +1,477 @@
+1. Access Modifiers:
+   public: Accessible from any code.
+   private: Accessible only within the containing type.
+   protected: Accessible within the containing type and derived types.
+   internal: Accessible within the same assembly.
+   protected internal: Accessible within the same assembly and derived types.
+   private protected: Accessible within the containing type and derived types in the same assembly.
+
+2. Static, Const, Readonly:
+   static: Belongs to the type itself.
+   const: Compile-time constant.
+   readonly: Assigned only during declaration or in a constructor.
+
+3. Constructor:
+   Initializes a new instance of a class, setting up its initial state.
+
+4. Partial Keyword:
+   Allows a class, struct, or interface to be split across multiple files.
+
+5. Tuple:
+   A data structure that holds multiple elements of different types as a single unit.
+
+6. Record Keyword:
+   Defines a reference type with built-in functionality for value equality and immutability.
+
+7. Overloading and Overriding:
+   Overloading: Multiple methods with the same name but different parameters.
+   Overriding: Derived class provides a specific implementation of a base class method.
+
+8. Field vs. Property:
+   Field: A variable directly declared in a class.
+   Property: Provides controlled access through get and set accessors.
+
+9. Optional Method Parameter:
+   By specifying a default value in the method signature.
+
+10. Interface vs. Abstract Class:
+    Interface: Defines a contract with method signatures without implementations.
+    Abstract Class: Can provide both abstract and implemented members.
+
+11. Interface Member Accessibility:
+    Members of an interface are implicitly public.
+
+12. True/False:  
+    True. Polymorphism allows derived classes to provide different implementations of the same method.
+
+13. True/False:  
+    True. The override keyword indicates that a method in a derived class is providing its own implementation.
+
+14. True/False:  
+    False. The new keyword hides a base class method rather than overriding it.
+
+15. True/False:  
+    False. Abstract methods can only be used in abstract classes.
+
+16. True/False:  
+    True. Normal (non-abstract) methods can be used in an abstract class.
+
+17. True/False:  
+    True. Derived classes can override methods that were virtual in the base class.
+
+18. True/False:  
+    True. Derived classes can override methods that were abstract in the base class.
+
+19. True/False:  
+    False. You cannot override a method that was neither virtual nor abstract in the base class.
+
+20. True/False:  
+    False. A class implementing an interface must provide implementations for all its members.
+
+21. True/False:  
+    True. A class implementing an interface can have other members that aren’t defined in the interface.
+
+22. True/False:  
+    False. A class cannot have more than one base class (no multiple inheritance).
+
+23. True/False:  
+    True. A class can implement more than one interface.
+
+
+
+
+
+--- Reversing an Array --
+
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        int[] numbers = GenerateNumbers(10);
+        Reverse(numbers);
+        PrintNumbers(numbers);
+    }
+
+    static int[] GenerateNumbers(int length = 10)
+    {
+        int[] array = new int[length];
+        for(int i = 0; i < length; i++)
+        {
+            array[i] = i + 1;
+        }
+        return array;
+    }
+
+    static void Reverse(int[] array)
+    {
+        int temp;
+        int length = array.Length;
+        for(int i = 0; i < length / 2; i++)
+        {
+            temp = array[i];
+            array[i] = array[length - i - 1];
+            array[length - i - 1] = temp;
+        }
+    }
+
+    static void PrintNumbers(int[] array)
+    {
+        foreach(var num in array)
+        {
+            Console.Write(num + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+
+
+
+---Fibonacci Sequence---
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        for(int i = 1; i <= 10; i++)
+        {
+            Console.Write(Fibonacci(i) + " ");
+        }
+    }
+
+    static int Fibonacci(int n)
+    {
+        if(n == 1 || n == 2)
+            return 1;
+        return Fibonacci(n - 1) + Fibonacci(n - 2);
+    }
+}
+
+
+--- OOP ---
+
+using System;
+using System.Collections.Generic;
+
+interface IPersonService
+{
+    void CalculateAge();
+    decimal CalculateSalary();
+}
+
+interface IStudentService : IPersonService
+{
+    void EnrollCourse(Course course);
+    double CalculateGPA();
+}
+
+interface IInstructorService : IPersonService
+{
+    void AssignDepartment(Department department);
+    void AddBonus(decimal bonus);
+}
+
+abstract class Person : IPersonService
+{
+    public string Name { get; private set; }
+    public DateTime BirthDate { get; private set; }
+    protected decimal salary;
+
+    public Person(string name, DateTime birthDate, decimal salary)
+    {
+        Name = name;
+        BirthDate = birthDate;
+        this.salary = salary >= 0 ? salary : throw new ArgumentException("Salary cannot be negative.");
+    }
+
+    public void CalculateAge()
+    {
+        var today = DateTime.Today;
+        int age = today.Year - BirthDate.Year;
+        if (BirthDate.Date > today.AddYears(-age)) age--;
+        Console.WriteLine($"{Name} is {age} years old.");
+    }
+
+    public virtual decimal CalculateSalary()
+    {
+        return salary;
+    }
+
+    private List<string> addresses = new List<string>();
+    public void AddAddress(string address)
+    {
+        addresses.Add(address);
+    }
+
+    public List<string> GetAddresses()
+    {
+        return addresses;
+    }
+}
+
+class Instructor : Person, IInstructorService
+{
+    public Department Department { get; private set; }
+    public bool IsHead { get; private set; }
+    private int yearsOfExperience;
+
+    public Instructor(string name, DateTime birthDate, decimal salary, DateTime joinDate)
+        : base(name, birthDate, salary)
+    {
+        yearsOfExperience = DateTime.Now.Year - joinDate.Year;
+    }
+
+    public void AssignDepartment(Department department)
+    {
+        Department = department;
+    }
+
+    public override decimal CalculateSalary()
+    {
+        decimal bonus = yearsOfExperience * 100; 
+        return base.CalculateSalary() + bonus;
+    }
+
+    public void AddBonus(decimal bonus)
+    {
+        salary += bonus;
+    }
+}
+
+class Student : Person, IStudentService
+{
+    private List<Course> courses = new List<Course>();
+    private Dictionary<Course, char> grades = new Dictionary<Course, char>();
+
+    public Student(string name, DateTime birthDate, decimal salary = 0)
+        : base(name, birthDate, salary)
+    {
+    }
+
+    public void EnrollCourse(Course course)
+    {
+        courses.Add(course);
+        course.AddStudent(this);
+    }
+
+    public double CalculateGPA()
+    {
+        double total = 0;
+        foreach(var grade in grades.Values)
+        {
+            total += GradeToPoint(grade);
+        }
+        return courses.Count > 0 ? total / courses.Count : 0.0;
+    }
+
+    private double GradeToPoint(char grade)
+    {
+        return grade switch
+        {
+            'A' => 4.0,
+            'B' => 3.0,
+            'C' => 2.0,
+            'D' => 1.0,
+            'F' => 0.0,
+            _ => 0.0,
+        };
+    }
+
+    public void AssignGrade(Course course, char grade)
+    {
+        if(courses.Contains(course))
+        {
+            grades[course] = grade;
+        }
+    }
+}
+
+class Course
+{
+    public string Title { get; private set; }
+    private List<Student> enrolledStudents = new List<Student>();
+
+    public Course(string title)
+    {
+        Title = title;
+    }
+
+    public void AddStudent(Student student)
+    {
+        enrolledStudents.Add(student);
+    }
+
+    public List<Student> GetEnrolledStudents()
+    {
+        return enrolledStudents;
+    }
+}
+
+class Department
+{
+    public string Name { get; private set; }
+    public Instructor Head { get; private set; }
+    public decimal Budget { get; private set; }
+    public DateTime StartDate { get; private set; }
+    public DateTime EndDate { get; private set; }
+    private List<Course> courses = new List<Course>();
+
+    public Department(string name, decimal budget, DateTime startDate, DateTime endDate)
+    {
+        Name = name;
+        Budget = budget;
+        StartDate = startDate;
+        EndDate = endDate;
+    }
+
+    public void AssignHead(Instructor instructor)
+    {
+        Head = instructor;
+        instructor.AssignDepartment(this);
+    }
+
+    public void AddCourse(Course course)
+    {
+        courses.Add(course);
+    }
+
+    public List<Course> GetCourses()
+    {
+        return courses;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Department csDept = new Department("Computer Science", 500000, DateTime.Now, DateTime.Now.AddYears(1));
+
+        Instructor profJohn = new Instructor("John Doe", new DateTime(1980, 5, 20), 80000, new DateTime(2010, 9, 1));
+        csDept.AssignHead(profJohn);
+
+        Student studentAlice = new Student("Alice Smith", new DateTime(2000, 3, 15));
+        Student studentBob = new Student("Bob Brown", new DateTime(1999, 7, 22));
+
+        Course math = new Course("Mathematics");
+        Course programming = new Course("Programming 101");
+        csDept.AddCourse(math);
+        csDept.AddCourse(programming);
+
+        studentAlice.EnrollCourse(math);
+        studentAlice.EnrollCourse(programming);
+        studentBob.EnrollCourse(programming);
+
+        studentAlice.AssignGrade(math, 'A');
+        studentAlice.AssignGrade(programming, 'B');
+        studentBob.AssignGrade(programming, 'C');
+
+        Console.WriteLine($"{studentAlice.Name}'s GPA: {studentAlice.CalculateGPA()}");
+        Console.WriteLine($"{studentBob.Name}'s GPA: {studentBob.CalculateGPA()}");
+
+
+        Console.WriteLine($"{profJohn.Name}'s Salary: {profJohn.CalculateSalary()}");
+    }
+}
+
+
+
+
+-- COLOR & BALL ---
+
+
+using System;
+
+class Color
+{
+    private int red;
+    private int green;
+    private int blue;
+    private int alpha;
+
+    public Color(int red, int green, int blue, int alpha = 255)
+    {
+        this.red = Clamp(red);
+        this.green = Clamp(green);
+        this.blue = Clamp(blue);
+        this.alpha = Clamp(alpha);
+    }
+
+    private int Clamp(int value)
+    {
+        return value < 0 ? 0 : (value > 255 ? 255 : value);
+    }
+
+    public int Red
+    {
+        get => red;
+        set => red = Clamp(value);
+    }
+
+    public int Green
+    {
+        get => green;
+        set => green = Clamp(value);
+    }
+
+    public int Blue
+    {
+        get => blue;
+        set => blue = Clamp(value);
+    }
+
+    public int Alpha
+    {
+        get => alpha;
+        set => alpha = Clamp(value);
+    }
+
+    public double GetGrayscale()
+    {
+        return (red + green + blue) / 3.0;
+    }
+
+    public override string ToString()
+    {
+        return $"RGBA({red}, {green}, {blue}, {alpha}) - Grayscale: {GetGrayscale()}";
+    }
+}
+
+
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Color red = new Color(255, 0, 0);
+        Color green = new Color(0, 255, 0, 128);
+        Color blue = new Color(0, 0, 255);
+
+        Ball ball1 = new Ball(5, red);
+        Ball ball2 = new Ball(3, green);
+        Ball ball3 = new Ball(4, blue);
+
+        ball1.Throw();
+        ball1.Throw();
+        ball2.Throw();
+        ball3.Throw();
+        ball3.Throw();
+        ball3.Throw();
+
+        ball2.Pop();
+        ball3.Pop();
+
+        ball2.Throw();
+        ball3.Throw();
+
+        Console.WriteLine(ball1);
+        Console.WriteLine(ball2);
+        Console.WriteLine(ball3);
+    }
+}
+
+
+
