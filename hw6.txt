@@ -1,1 +1,161 @@
 
+Test Your Knowledge
+
+1. Generics enhance type safety and code reusability by allowing classes and methods to operate with any data type without compromising type integrity. They eliminate the need for casting and reduce runtime errors by enforcing compile-time type checks.
+
+2. You can create a list of strings by specifying the type parameter as string. For example:
+   
+   List<string> stringList = new List<string>();
+   
+
+3. How many generic type parameters does the Dictionary class have?
+   
+   The Dictionary class has two generic type parameters: one for the key and one for the value, such as Dictionary<TKey, TValue>.
+
+4. False. Each type parameter in a generic class can be a different type and does not need to match the others.
+
+5. The Add() method is used to add items to a List object. For example:
+   myList.Add(item);
+   
+
+6. Two methods are Remove() and RemoveAt(). Remove(item) deletes the first occurrence of the specified item, while RemoveAt(index) removes the item at the specified index.
+
+7. You indicate a generic type parameter by using angle brackets <> after the class name with a placeholder, such as:
+   
+   class MyClass<T> { }
+   
+
+8. False. Generic classes can have multiple type parameters, for example, Dictionary<TKey, TValue>.
+
+9. True. Generic type constraints specify requirements that the type parameter must satisfy, such as being a reference type or implementing a specific interface.
+
+10. True. Constraints allow the generic type to assume certain characteristics, enabling the use of specific methods and properties defined by the constraint.
+
+
+1. Custom Stack Class MyStack<T>
+
+public class MyStack<T>
+{
+    private List<T> _elements = new List<T>();
+
+    public int Count()
+    {
+        return _elements.Count;
+    }
+
+    public void Push(T item)
+    {
+        _elements.Add(item);
+    }
+
+    public T Pop()
+    {
+        if (_elements.Count == 0)
+            throw new InvalidOperationException("Stack is empty.");
+        T item = _elements[_elements.Count - 1];
+        _elements.RemoveAt(_elements.Count - 1);
+        return item;
+    }
+}
+
+
+2. Generic List Data Structure MyList<T>
+
+
+public class MyList<T>
+{
+    private List<T> _items = new List<T>();
+
+    public void Add(T element)
+    {
+        _items.Add(element);
+    }
+
+    public T Remove(int index)
+    {
+        if(index < 0 || index >= _items.Count)
+            throw new ArgumentOutOfRangeException();
+        T item = _items[index];
+        _items.RemoveAt(index);
+        return item;
+    }
+
+    public bool Contains(T element)
+    {
+        return _items.Contains(element);
+    }
+
+    public void Clear()
+    {
+        _items.Clear();
+    }
+
+    public void InsertAt(T element, int index)
+    {
+        if(index < 0 || index > _items.Count)
+            throw new ArgumentOutOfRangeException();
+        _items.Insert(index, element);
+    }
+
+    public void DeleteAt(int index)
+    {
+        if(index < 0 || index >= _items.Count)
+            throw new ArgumentOutOfRangeException();
+        _items.RemoveAt(index);
+    }
+
+    public T Find(int index)
+    {
+        if(index < 0 || index >= _items.Count)
+            throw new ArgumentOutOfRangeException();
+        return _items[index];
+    }
+}
+
+
+3. Generic Repository GenericRepository<T>
+
+
+public interface IRepository<T>
+{
+    void Add(T item);
+    void Remove(T item);
+    void Save();
+    IEnumerable<T> GetAll();
+    T GetById(int id);
+}
+
+public class Entity
+{
+    public int Id { get; set; }
+}
+
+public class GenericRepository<T> : IRepository<T> where T : Entity
+{
+    private readonly List<T> _dataSource = new List<T>();
+
+    public void Add(T item)
+    {
+        _dataSource.Add(item);
+    }
+
+    public void Remove(T item)
+    {
+        _dataSource.Remove(item);
+    }
+
+    public void Save()
+    {
+        // Implementation for saving to data source
+    }
+
+    public IEnumerable<T> GetAll()
+    {
+        return _dataSource;
+    }
+
+    public T GetById(int id)
+    {
+        return _dataSource.FirstOrDefault(item => item.Id == id);
+    }
+}
